@@ -1,47 +1,30 @@
-import React, { useState } from "react";
-
-import TaskList from "./components/Tasks/TaskList/TaskList";
-import TaskInput from "./components/Tasks/TaskInput/TaskInput";
 import "./App.css";
+import CreateUser from "./Users/CreateUser";
+import UserList from "./Users/UserList";
+import {useState} from "react";
 
 const App = () => {
-  const [tasks, setTasks] = useState([
-    { text: "Создание курса - 1 час", id: "t1" },
-    { text: "Разминка 15 мин", id: "t2" },
-    { text: "Создание курса - 1 час", id: "t3" },
-  ]);
 
-  const addTaskHandler = (inputText) => {
-    setTasks((prevTasks) => {
-      const updatedTasks = [...prevTasks];
-      updatedTasks.unshift({ text: inputText, id: Math.random().toString() });
-      return updatedTasks;
-    });
-  };
+    const users = [
+        {name: 'Lu', age: 52, id: 1},
+        {name: 'John', age: 52, id: 2},
+    ]
 
-  const deleteTaskHandler = (taskId) => {
-    setTasks((prevTasks) => {
-      const updatedTasks = prevTasks.filter((task) => task.id !== taskId);
-      return updatedTasks;
-    });
-  };
+    const [userList, setUserList] = useState(users);
 
-  let content = (
-    <p style={{ textAlign: "center" }}>Задач не найдено! Добавить?</p>
-  );
+    const createUserHandler = function (name, age) {
+        const id = Math.random().toString();
+        setUserList((prevUserList) => {
+            return [...prevUserList, {name: name, age: age, id: id}];
+        });
+    }
 
-  if (tasks.length > 0) {
-    content = <TaskList items={tasks} onDeleteTask={deleteTaskHandler} />;
-  }
-
-  return (
-    <div>
-      <section id="task-form">
-        <TaskInput onAddTask={addTaskHandler} />
-      </section>
-      <section id="tasks">{content}</section>
-    </div>
-  );
+    return (
+        <div>
+            <CreateUser onCreateUser={createUserHandler}/>
+            <UserList users={userList}/>
+        </div>
+    );
 };
 
 export default App;
