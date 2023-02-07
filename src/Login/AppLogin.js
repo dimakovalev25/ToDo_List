@@ -20,6 +20,7 @@ function AppLogin() {
     <React.Fragment>
         <AuthContext.Provider value={{
             isLoggedIn: isLoggedIn,
+            onLogout: logoutHandler,
             user: 'admin'
         }}>
             <MainHeader onLogout={logoutHandler} />
