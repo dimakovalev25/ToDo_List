@@ -1,14 +1,25 @@
-import React, {useState} from "react";
+import React, {useState, useRef, useEffect} from "react";
 
 import Card from "./Card";
 import styles from './CreateUser.module.css'
 import Button from "./Button";
-// import ErrorModal from "./ErrorModal";
+import ErrorModal from "./ErrorModal";
 
 const CreateUser = function (props) {
 
     const [inputName, setInputName] = useState('')
     const [inputAge, setInputAge] = useState('')
+    const [error, setError] = useState(false)
+
+    const nameInputRef = useRef();
+    const ageInputRef = useRef();
+
+
+    useEffect(() => {
+        const effect = 'effect';
+        console.log(effect)
+
+    },[error])
 
     const nameChangeHandler = function (e) {
         setInputName(e.target.value);
@@ -19,12 +30,15 @@ const CreateUser = function (props) {
 
     const createUserHandler = function (e) {
         e.preventDefault();
+        // console.log(nameInputRef.current.value)
 
         if (inputName.trim().length === 0 || inputAge.trim().length === 0) {
+            setError(true)
             return
         }
 
         if (+inputAge < 1) {
+            setError(true)
             return;
         }
 
@@ -35,26 +49,45 @@ const CreateUser = function (props) {
 
     }
 
+    // const errorHandler = () => {
+    //     setError(false);
+    // };
+    const errorHandler = function () {
+        setError(false);
+    };
+
     return (
         <>
-            {/*<ErrorModal title={'Error'} message={'Something went wrong!'}></ErrorModal>*/}
+            {error ? <ErrorModal onCloseModal={errorHandler} title={'Error'}
+                                 message={'Something went wrong!'}></ErrorModal> :
+                <Card>
+                    <form onSubmit={createUserHandler}>
+                        <label htmlFor={'name'}>Name</label>
+                        <input
+                            ref={nameInputRef}
+                            value={inputName}
+                            onChange={nameChangeHandler}
+                            className={styles.input}
+                            id={'name'}
+                            type={'text'}>
 
-            <Card>
-                <form onSubmit={createUserHandler}>
-                    <label htmlFor={'name'}>Name</label>
-                    <input value={inputName} onChange={nameChangeHandler} className={styles.input} id={'name'}
-                           type={'text'}></input>
+                        </input>
 
-                    <label htmlFor={'age'}>Age</label>
-                    <input value={inputAge} onChange={ageChangeHandler} className={styles.input} id={'age'}
-                           type={'number'}></input>
+                        <label htmlFor={'age'}>Age</label>
+                        <input
+                            ref={ageInputRef}
+                            value={inputAge}
+                            onChange={ageChangeHandler}
+                            className={styles.input}
+                            id={'age'}
+                            type={'number'}>
 
-                    <Button onClick={createUserHandler} type={'submit'}>ADD</Button>
-                </form>
-            </Card>
+                        </input>
+
+                        <Button onClick={createUserHandler} type={'submit'}>ADD</Button>
+                    </form>
+                </Card>}
         </>
-
-
     )
 }
 

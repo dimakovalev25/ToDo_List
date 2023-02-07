@@ -2,6 +2,7 @@ import "./App.css";
 import CreateUser from "./Users/CreateUser";
 import UserList from "./Users/UserList";
 import {useState} from "react";
+import AppLogin from "./Login/AppLogin";
 
 const App = () => {
 
@@ -21,8 +22,9 @@ const App = () => {
 
     return (
         <div>
-            <CreateUser onCreateUser={createUserHandler}/>
-            <UserList users={userList}/>
+            <AppLogin/>
+            {/*<CreateUser onCreateUser={createUserHandler}/>*/}
+            {/*<UserList users={userList}/>*/}
         </div>
     );
 };
